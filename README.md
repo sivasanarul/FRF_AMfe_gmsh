@@ -1,5 +1,5 @@
 # FRF using Gmsh and AMfe
-Frequency response from mesh generated from Gmsh using the AMfe python library:
+Frequency response of hex mesh of a cuboid generated from Gmsh using the AMfe python library:
 - Generate a cuboid geometry with the specified dimension in Gmsh.
 - Generate a structured hex mesh with the number of division in an edge specified using the variable NN.
 
