@@ -125,9 +125,9 @@ import time
 
 E_alu = 210e9
 nu_alu = 0.3
-rho_alu = 2.7e-3
+rho_alu = 7600
 my_material = KirchhoffMaterial(E_alu, nu_alu, rho_alu)
-force           = constant_force(10000)
+force           = constant_force(100)
 force_direction = np.array([0.0, 1.0, 0.0])
 alpha = 1e-6
 beta  = 1e-3
