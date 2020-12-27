@@ -1,4 +1,4 @@
-# FRF_AMfe_gmsh
+# FRF using Gmsh and AMfe
 Frequency response from mesh generated from Gmsh using the AMfe python library:
 - Generate a cuboid geometry with the specified dimension in Gmsh.
 - Generate a structured hex mesh with the number of division in an edge specified using the variable NN.
@@ -47,7 +47,7 @@ pip install gmsh
 
 For furthur details refer https://pypi.org/project/gmsh/.
 
-# References
+# Reference
 
 A delayed frequency preconditioner approach for speeding-up frequency response computatio of structural components.
 Eccomas Proceedia ID: 9005 / Conference Proceeding ID: 19155 / DOI: 10.47964/1120.9005.19155
