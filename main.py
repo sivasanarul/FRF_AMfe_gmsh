@@ -10,9 +10,6 @@ import json
 from subprocess import call
 
 gmsh.initialize()
-#configdict = json.loads(sys.argv[1])
-# Let us start by creating a simple geometry with two adjacent squares sharing
-# an edge:
 
 xlen = 8000
 ylen = 3000
@@ -221,43 +218,42 @@ initial_guess = fc * 0.0
 
 
 
-for repeat in range(1):
-    for i in range(2 * len(w_list)):
-        w = w_list[count]
-        Z = buildZ(w, M1, K1, alpha, beta)
-        Z1 = buildPrec(w, M1, K1, alpha, beta)
+for i in range(2 * len(w_list)):
+    w = w_list[count]
+    Z = buildZ(w, M1, K1, alpha, beta)
+    Z1 = buildPrec(w, M1, K1, alpha, beta)
 
-        #################################################################3
-        begin_precon = time.time()
-        M_ilu_full = sparse.linalg.spilu(Z1, drop_tol=tolere)
-        Mx_ilu_full = lambda x: M_ilu_full.solve(x)
-        M3_prec_full = sparse.linalg.LinearOperator((K1.shape[0], K1.shape[0]), Mx_ilu_full)
-        end_precon = time.time()
+    #################################################################3
+    begin_precon = time.time()
+    M_ilu_full = sparse.linalg.spilu(Z1, drop_tol=tolere)
+    Mx_ilu_full = lambda x: M_ilu_full.solve(x)
+    M3_prec_full = sparse.linalg.LinearOperator((K1.shape[0], K1.shape[0]), Mx_ilu_full)
+    end_precon = time.time()
 
-        begin_solver = time.time()
-        counter_full_ilu = gmres_counter()
-        usol_ilu_full, info_ilu_full = sparse.linalg.bicgstab(Z, fc, x0=initial_guess, M=M3_prec_full, tol=1e-07,
-                                                              callback=counter_full_ilu)
-        end_solver = time.time()
-        time_taken_ilu_full_precon = end_precon - begin_precon
-        time_taken_ilu_full_precon_list.append(time_taken_ilu_full_precon)
+    begin_solver = time.time()
+    counter_full_ilu = gmres_counter()
+    usol_ilu_full, info_ilu_full = sparse.linalg.bicgstab(Z, fc, x0=initial_guess, M=M3_prec_full, tol=1e-07,
+                                                          callback=counter_full_ilu)
+    end_solver = time.time()
+    time_taken_ilu_full_precon = end_precon - begin_precon
+    time_taken_ilu_full_precon_list.append(time_taken_ilu_full_precon)
 
-        time_taken_ilu_full_solver = end_solver - begin_solver
-        time_taken_ilu_full_solver_list.append(time_taken_ilu_full_solver)
+    time_taken_ilu_full_solver = end_solver - begin_solver
+    time_taken_ilu_full_solver_list.append(time_taken_ilu_full_solver)
 
-        number_iterations_full_ilu_list.append(counter_full_ilu.niter)
-        time_taken_ilu_full = time_taken_ilu_full + time_taken_ilu_full_solver + time_taken_ilu_full_precon
-        time_taken_ilu_full_diff_list.append(
-            end_solver - begin_precon - time_taken_ilu_full_solver - time_taken_ilu_full_precon)
-        #################################################################3
-        usol_recovered, du, ddu = formulation.recover(usol_ilu_full, dq0, ddq0, 0)
-        u_solution.update({w:usol_recovered})
-        u_solution_dof.append(np.abs(usol_recovered[reference_ydof]))
-        freq_list.append(w/(2*np.pi))
-        count += 1
+    number_iterations_full_ilu_list.append(counter_full_ilu.niter)
+    time_taken_ilu_full = time_taken_ilu_full + time_taken_ilu_full_solver + time_taken_ilu_full_precon
+    time_taken_ilu_full_diff_list.append(
+        end_solver - begin_precon - time_taken_ilu_full_solver - time_taken_ilu_full_precon)
+    #################################################################3
+    usol_recovered, du, ddu = formulation.recover(usol_ilu_full, dq0, ddq0, 0)
+    u_solution.update({w:usol_recovered})
+    u_solution_dof.append(np.abs(usol_recovered[reference_ydof]))
+    freq_list.append(w/(2*np.pi))
+    count += 1
 
-        if w == w_list[-1]:
-            break
+    if w == w_list[-1]:
+        break
 
 plt.figure()
 plt.plot(freq_list,u_solution_dof,'-')
