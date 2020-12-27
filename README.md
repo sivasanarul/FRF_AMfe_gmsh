@@ -1,5 +1,10 @@
 # FRF_AMfe_gmsh
-Frequency response from mesh generated from Gmsh using the AMfe python library
+Frequency response from mesh generated from Gmsh using the AMfe python library:
+- Generate a cuboid geometry with the specified dimension in Gmsh.
+- Generate a structured hex mesh with the number of division in an edge specified using the variable NN.
+
+- Import the mesh in AMfe and create the system matrices.
+- Perform the amplitude frequency response and plot the results.
 
 # Dependencies
 
@@ -17,13 +22,13 @@ Use
 git clone https://github.com/AppliedMechanics/AMfe.git
 
 to get the package. For installation of the package in development mode run
-
-cd AMfe
+```{r, engine='bash', count_lines}
+cd AMfe 
 conda create --name <environment-name-of-choice> python=3.7
 conda activate <environment-name-of-choice> 
 python conda_setup.py
 python setup.py develop [no_fortran]
-
+```
 in the main folder. The conda_setup.py file installs the dependencies via conda. It is recommended to install the dependencies with conda because setup.py can only install them via pip which can lead to an unclean conda environment.
 
 The python setup.py develop command builds the fortran routines and installs the python module in-place, i.e., when you do changes to the source code they will be used the next time the module is loaded.
