@@ -11,9 +11,9 @@ from subprocess import call
 
 gmsh.initialize()
 
-xlen = 8000
-ylen = 3000
-zlen = 1000
+xlen = 20
+ylen = 3
+zlen = 1
 meshname = 'x_35'
 meshname_withformat = meshname + '.msh2'
 lc = 1e-2
@@ -140,7 +140,7 @@ input_file = meshname +  '.msh2'
 input_file_rename = meshname +  '.msh'
 os.rename(input_file,input_file_rename)
 
-my_mesh = ui.import_mesh_from_file('x_2025dof.msh')
+my_mesh = ui.import_mesh_from_file(input_file_rename)
 my_component = StructuralComponent(my_mesh)
 ui.assign_material_by_group(my_component, my_material, 'material')
 if 'dirichlet' in my_mesh.groups.keys():
